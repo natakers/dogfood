@@ -10,6 +10,7 @@ import api from '../../Api'
 import useDebounce from '../../hooks/useDebounce';
 // import data from '../../assets/data.json';
 import SeachInfo from '../SeachInfo';
+import Spinner from '../Spinner'
 // import Button from '../Button/button';
 
 function App() {
@@ -17,18 +18,14 @@ function App() {
   const [searchQuery, setSearchQuery] = useState('');
   const [currentUser, setCurrentUser] = useState({});
   const debounceValue = useDebounce(searchQuery, 500);
+  const [isLoading, setIsloading] = useState(false)
 
   const handleRequest = async () => {
     console.log(debounceValue);
-    // if (!debounceValue) {
-    //   const allCards = await api.getProductList();
-    //   // object from API
-    //   setCards(allCards.products);
-    // } else {
-      // array from API
       try{
         const filterCards = await api.search(debounceValue);
         setCards(filterCards);
+        setIsloading(true)
       } catch(error) {
         console.log(error)
       }
@@ -42,12 +39,15 @@ function App() {
   },[debounceValue])
 
   useEffect(() => {
+    setIsloading(false)
       Promise.all([api.getProductList(), api.getUserInfo()])
          .then(([productData, userData]) => {
-          // console.log(productData);
+          console.log(userData);
            setCurrentUser(userData);
            setCards(productData.products);
+           
          });
+         setIsloading(true)
      }, []);
 
   const handleFormSubmit = (e) => {
@@ -62,16 +62,15 @@ function App() {
   const handleInputChange = (inputValue) => {
     setSearchQuery(inputValue);
   }
+
+  function handleProductLike(product) {
+		const isLiked = product.likes.some(id => id === currentUser._id) //ищем в массиве лайков id текущего пользователя;
+		api.changeLikeProductStatus(product._id, !isLiked).then((newCard) => { // в зависимсоти от того есть лайки или нет отправляем запрос PUT или DELETE
+			const newCards = cards.map((c) => {console.log('Карточка в переборе', c); console.log('Карточка в c сервера', newCard); return c._id === newCard._id ? newCard : c});
+			setCards(newCards);
+		});
+	}
   
-  // function handleProductLike(product) {
-	// 	const isLiked = product.likes.some(id => id === currentUser._id) //ищем в массиве лайков id текущего пользователя;
-	// 	api.changeLikeProductStatus(product._id, !isLiked).then((newCard) => { // в зависимсоти от того есть лайки или нет отправляем запрос PUT или DELETE
-	// 		const newCards = cards.map((c) => {
-  //       console.log('Карточка в переборе', c); console.log('Карточка в c сервера', newCard); 
-  //       return c._id === newCard._id ? newCard : c});
-	// 		setCards(newCards);
-	// 	});
-	// }
   return (
     <>
       <Header user={currentUser} onUpdateUser={handleUpdateUser}>
@@ -81,10 +80,15 @@ function App() {
         </>
       </Header>
       <main className='content container'>
+      
       <SeachInfo searchCount={cards.length} searchText={debounceValue}/>
        <Sort/>
         <div className='content__cards'>
-         <CardList goods={cards}/>
+        {(cards && cards.length > 0) ?
+        <CardList goods={cards} onProductLike={handleProductLike} currentUser={currentUser}/> : <Spinner/>
+
+      }
+         
         </div>
       </main>
       <Footer/>

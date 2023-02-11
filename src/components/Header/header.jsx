@@ -1,11 +1,25 @@
+import { useState,   useEffect } from 'react';
 import s from "./index.module.css";
 import cn from "classnames";
 
 function Header({ user, onUpdateUser, children }) {
+  console.log(user.email);
+  const [isShow, setisShow] = useState(false)
+
+  const [nameUser, setName] = useState('')
+  const [aboutUser, setAbout] = useState('')
+  console.log(user.email);
+  console.log(nameUser);
   const handleClickButtonEdit = (e) => {
 		e.preventDefault();
-		onUpdateUser({name: "Василий", about: "Ментор"})
+    setisShow(false)
+		onUpdateUser({name: nameUser, about: aboutUser})
 	}
+
+  useEffect(() => {
+    setName(user.name)
+    setAbout(user.about)
+     }, [user]);
   return (
     <header className={cn(s.header, "cover")}>
       <div className="container">
@@ -14,13 +28,24 @@ function Header({ user, onUpdateUser, children }) {
           
         </div>
         <div className={s.profile}>
-            {user.email && <span>{user.email}</span>}
-            {user.name && (
+            {user.email && ( isShow ?
+              (<input type="text" value={nameUser} onInput={(e) => {setName(e.target.value)}}/>) :
+              (<span>
+                {nameUser}
+              </span>)
+            )}
+            <span> : </span>
+            {user.about && ( isShow ?
+              (<input type="text" value={aboutUser} onChange={(e) => {setAbout(e.target.value)}}/>) :
               <span>
-                {user.name}: {user.about}
+                 {user.about}
               </span>
             )}
-            <button onClick={handleClickButtonEdit} className="btn btn_type_secondary">Изменить</button>
+            {
+              !isShow ? <button onClick={() => setisShow(true)} className="btn btn_type_secondary">Изменить</button> :
+              <button onClick={handleClickButtonEdit} className="btn btn_type_secondary">Принять</button>
+            }
+            
           </div>
       </div>
     </header>

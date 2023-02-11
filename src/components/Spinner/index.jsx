@@ -4,7 +4,7 @@ import "./index.css";
 
 const Spinner = () => {
 	return (
-		null
+		<div className="lds-dual-ring"></div>
 	);
 };
 
