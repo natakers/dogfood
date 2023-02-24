@@ -13,6 +13,8 @@
 	font-size: 14px;
 	line-height: 20px;
 	color: #7B8E98;
+  border: none;
+  background-color: transparent;
 }
 
 .sort__link_selected {
@@ -21,4 +23,7 @@
 
 .sort__link:hover {
 	color: #1A1A1A;
+	cursor: pointer;
 }
+
+

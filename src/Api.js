@@ -1,4 +1,5 @@
 const onResponce = (res) => {
+  console.log(res);
 	return res.ok ? res.json() : Promise.reject(`Ошибка: ${res.status}`);
 };
 
@@ -17,6 +18,15 @@ class Api {
 		}).then(onResponce);
 	}
 
+  getProductById(idProduct) {
+    return fetch(`${this._baseUrl}/products/${idProduct}`, {
+        headers: {
+          authorization: this._token,
+          "Content-Type": "application/json",
+        }
+    }).then(onResponce)
+}
+
 	getUserInfo() {
 		return fetch(`${this._baseUrl}/users/me`, {
 			headers: {
@@ -25,9 +35,7 @@ class Api {
 		}).then(onResponce);
 	}
   search(searchQuery) {
-    // if (!searchQuery) {
-    //   return this.getProductList()
-    // }
+
     return fetch(`${this._baseUrl}/products/search?query=${searchQuery}`,{
         headers: {
             authorization: this._token
@@ -68,15 +76,6 @@ const config = {
     token: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2UxMmRmNDU5Yjk4YjAzOGY3N2IyMjgiLCJncm91cCI6Imdyb3VwLTEwIiwiaWF0IjoxNjc1NzAxNzgwLCJleHAiOjE3MDcyMzc3ODB9.zyudBlyMJGJX7MyT2kglcsfV5h-RFGpaT7KCgoV76Sw'
 }
 
-
-// or
-// const config = {
-//     baseUrl: 'https://api.react-learning.ru',
-//     headers: {
-//         'content-type': 'application/json',
-//         Authorization: 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJfaWQiOiI2M2UxMmRmNDU5Yjk4YjAzOGY3N2IyMjgiLCJncm91cCI6Imdyb3VwLTEwIiwiaWF0IjoxNjc1NzAxNzgwLCJleHAiOjE3MDcyMzc3ODB9.zyudBlyMJGJX7MyT2kglcsfV5h-RFGpaT7KCgoV76Sw'
-//     }
-// }
 
 const api = new Api(config)
 
