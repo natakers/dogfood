@@ -10,8 +10,6 @@ function Header({ onUpdateUser, children }) {
 
   const [nameUser, setName] = useState('')
   const [aboutUser, setAbout] = useState('')
-  console.log(user.email);
-  console.log(nameUser);
   const handleClickButtonEdit = (e) => {
 		e.preventDefault();
     setisShow(false)

@@ -23,9 +23,7 @@ export const ProductPage = ({ handleLike }) => {
   } = useApi(handleGetProduct);
 
   const handleProductLike = useCallback(() => {
-    console.log(product);
     handleLike(product).then((updateProduct) => {
-      console.log(updateProduct);
       setProduct(updateProduct);
     });
   }, [product, handleLike, setProduct]);

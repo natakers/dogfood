@@ -66,7 +66,6 @@ function App() {
       return c._id === newCard._id ? newCard : c;
     });
     setCards(newCards);
-    console.log(newCard);
     return newCard;
   };
   const onChangeSort = (id) => {
