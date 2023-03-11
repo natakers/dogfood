@@ -15,6 +15,7 @@
 	color: #7B8E98;
   border: none;
   background-color: transparent;
+  transition: all 0.2s ease;
 }
 
 .sort__link_selected {
@@ -26,4 +27,7 @@
 	cursor: pointer;
 }
 
-
+.sort__link:active {
+	color: #000;
+	cursor: pointer;
+}

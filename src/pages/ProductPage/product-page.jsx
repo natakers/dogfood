@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { useNavigate } from "react-router-dom";
-import s from "./index.module.css";
+import s from "../../components/Button/index.module.css";
 import { useParams } from "react-router-dom";
 import { Product } from "../../components/Product/product";
 import Spinner from "../../components/Spinner/Spinner";
@@ -32,7 +32,7 @@ export const ProductPage = ({ handleLike }) => {
     <>
       <div className="content__cards">
         <div>
-          <button className={s.buttonBack} onClick={() => navigate(-1)}>
+          <button className={s.btn_reg} onClick={() => navigate(-1)}>
             Назад
           </button>
         </div>

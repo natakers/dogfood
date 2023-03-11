@@ -3,14 +3,14 @@ import cn from "classnames";
 import { ReactComponent as Save } from "../Card/save.svg";
 import truck from "../../assets/images/truck.svg";
 import quality from "../../assets/images/quality.svg";
-import { useContext } from "react";
+import { useContext, useEffect, useState } from "react";
 import { UserContext } from "../../context/userContext";
-import {
-  calcDiscountPrice,
-  isLiked,
-  calcPriceFor100,
-} from "../../utils";
-
+import { calcDiscountPrice, isLiked, calcPriceFor100 } from "../../utils";
+import Modal from "../modal/Modal";
+import Form from "../Form/Form";
+import Reviews from "../Reviews/Reviews";
+import { ModalContext } from "../../context/modalContext";
+import st from "../Button/index.module.css";
 
 export const Product = ({
   onProductLike,
@@ -25,11 +25,22 @@ export const Product = ({
   wight,
   _id,
 }) => {
-
   const { user } = useContext(UserContext);
+  const { setActive } = useContext(ModalContext);
   const discount_price = calcDiscountPrice(price, discount);
   const priceFor100 = calcPriceFor100(discount_price, wight);
   const liked = isLiked(likes, user._id);
+
+  const [open, setOpen] = useState(false);
+  const [currentReviews, setCurrentReviews] = useState();
+
+  useEffect(() => {
+    setCurrentReviews(reviews);
+  }, [reviews]);
+
+  const handleClaick = () => {
+    setActive(true);
+  };
 
   return (
     <>
@@ -87,14 +98,18 @@ export const Product = ({
               </p>
             </div>
           </div>
+          <button
+            className="card__cart btn btn_type_primary"
+            onClick={handleClaick}
+          >
+            Оставать отзыв
+          </button>
         </div>
       </div>
 
       <div className={s.box}>
         <h2 className={s.title}>Описание</h2>
-        <p className={s.subtitle} /*dangerouslySetInnerHTML={desctiptionHTML}*/>
-          {description}
-        </p>
+        <p className={s.subtitle}>{description}</p>
         <h2 className={s.title}>Характеристики</h2>
         <div className={s.grid}>
           <div className={s.naming}>Вес</div>
@@ -102,6 +117,23 @@ export const Product = ({
           <div className={s.naming}>Цена</div>
           <div className={s.description}>{priceFor100} ₽ за 100 грамм</div>
         </div>
+        <div>
+          <div className={s.reviewTitle__box}>
+            <h3 className={s.title}>Отзывы</h3>
+            <button
+              className={st.btn_reg}
+              onClick={() => {
+                setOpen(!open);
+              }}
+            >
+              {!open ? "Развернуть >" : "Свернуть v"}
+            </button>
+          </div>
+          {open && <Reviews reviews={currentReviews} />}
+        </div>
+        <Modal>
+          <Form id={_id} setCurrentReviews={setCurrentReviews} />
+        </Modal>
       </div>
     </>
   );

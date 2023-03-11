@@ -132,6 +132,10 @@
 	transition: background-color .3s;
 }
 
+.btn:hover {
+	cursor: pointer;
+}
+
 .btn_type_primary {
 	background-color: #FFE44D;
 }

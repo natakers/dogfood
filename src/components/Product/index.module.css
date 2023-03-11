@@ -181,6 +181,11 @@
 	fill: #000000;
 }
 
+.reviewTitle__box {
+	display: flex;
+	align-items: center;
+}
+
 @media (max-width: 1000px) {
 	.product {
 		gap: 20px;

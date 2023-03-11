@@ -1,3 +1,7 @@
+.content {
+  min-height: calc( 100vh - 372px );
+}
+
 .App {
   text-align: center;
 }

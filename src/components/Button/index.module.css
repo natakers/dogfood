@@ -24,3 +24,19 @@
 .secondary:hover {
 	color: #F44336;
 }
+
+.btn_reg {
+  background-color: aliceblue;
+  border: 1px solid black;
+  border-radius: 5px;
+  color: black;
+  margin: 0 10px;
+  padding: 5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.btn_reg:hover {
+  background-color: #FFAA0D;
+  color: black;
+}

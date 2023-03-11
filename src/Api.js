@@ -4,10 +4,39 @@ const onResponce = (res) => {
 
 class Api {
 	constructor({ baseUrl, token }) {
-		this._token = `Bearer ${token}`;
+		this._token = null;
 		// or -> this._headers = headers;
 		this._baseUrl = baseUrl;
+    console.log(token);
 	}
+
+
+  
+  singUpUser(data) {
+    return fetch(`${this._baseUrl}/signup`, {
+      method: "POST",
+      headers: {
+        // authorization: this._token,/
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    }).then(onResponce);
+  }
+
+  singInUser(data) {
+    return fetch(`${this._baseUrl}/signin`, {
+      method: "POST",
+      headers: {
+        // authorization: this._token,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+    .then(onResponce);
+  }
+
+  // POST https://api.react-learning.ru/signup // регистрация { ...data, group: 'group-id'}
+  // POST https://api.react-learning.ru/signin // авторизация
 
 	getProductList() {
 		return fetch(`${this._baseUrl}/products`, {
@@ -66,7 +95,26 @@ class Api {
       },
     }).then(onResponce);
   }
-	
+
+  setReview(id, text) {
+    return fetch(`${this._baseUrl}/products/review/${id}`, {
+      method: "POST",
+      headers: {
+        authorization: this._token,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(text),
+    }).then(onResponce);
+  }
+
+  getProductReviews(id) {
+		return fetch(`${this._baseUrl}/products/review/${id}`, {
+			headers: {
+				authorization: this._token,
+			},
+		}).then(onResponce);
+	}
+
 }
 
 

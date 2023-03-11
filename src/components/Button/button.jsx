@@ -7,6 +7,7 @@ function Button({type, children}) {
     <button className={ cn(s.button, {
         [s.primary]: type === 'primary',
         [s.secondary]: type === 'secondary',
+        [s.reg]: type === 'mytype',
     })}>
         {children}
     </button>
